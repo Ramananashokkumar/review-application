@@ -23,9 +23,9 @@ jobs:
       run: npm install
       working-directory: backend
 
-    - name: Check if tests exist
+    - name: Check for tests
       run: |
-        if [ -f "tests/*.js" ]; then
+        if [ "$(ls -A tests/*.js 2>/dev/null)" ]; then
           echo "Tests exist."
         else
           echo "No tests found."
