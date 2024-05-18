@@ -1,4 +1,4 @@
-name: Full Application Tests
+name: Full Application Workflow
 
 on:
   push:
@@ -6,36 +6,15 @@ on:
       - main
 
 jobs:
-  backend:
-    name: Backend Tests
+  build_frontend:
+    name: Build Frontend
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: Install backend dependencies
-        run: npm install
-        working-directory: backend
-
-      - name: Run backend tests
-        run: npm test
-        working-directory: backend
-
-  frontend:
-    name: Frontend Tests and Build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
+      - name: Set up Node.js for frontend
         uses: actions/setup-node@v2
         with:
           node-version: '14'
@@ -48,6 +27,23 @@ jobs:
         run: npm run build
         working-directory: frontend
 
-      - name: Run frontend tests
+  test_backend:
+    name: Test Backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js for backend
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install backend dependencies
+        run: npm install
+        working-directory: backend
+
+      - name: Run backend tests
         run: npm test
-        working-directory: frontend
+        working-directory: backend
