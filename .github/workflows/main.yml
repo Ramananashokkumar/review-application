@@ -20,10 +20,16 @@ jobs:
           node-version: '14'
 
       - name: Install dependencies
-        run: npm install
-
-      - name: Build CSS and JSX
         run: |
-          # Replace these commands with your build commands for CSS and JSX
+          cd frontend   # Adjust the directory according to your project structure
+          npm install
+
+      - name: Build CSS
+        run: |
+          cd frontend   # Adjust the directory according to your project structure
           npm run build:css
+
+      - name: Build JSX
+        run: |
+          cd frontend   # Adjust the directory according to your project structure
           npm run build:jsx
