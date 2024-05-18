@@ -1,4 +1,4 @@
-name: Full Test Workflow
+name: Frontend Build Workflow
 
 on:
   push:
@@ -6,38 +6,28 @@ on:
       - main
 
 jobs:
-  test:
-    name: Run All Tests
+  build:
+    name: Build Frontend
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Create frontend directory if it doesn't exist
-      - name: Create Frontend Directory
-        run: mkdir frontend
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
 
-      # Install dependencies for frontend
-      - name: Install frontend dependencies
-        run: |
-          cd frontend
-          npm install
+      # Install dependencies before running the build commands
+      - name: Install dependencies
+        run: npm install
+        working-directory: frontend   # Adjust the directory according to your project structure
 
-      # Run frontend tests
-      - name: Run frontend tests
+      # Build CSS and JSX after installing dependencies
+      - name: Build CSS and JSX
         run: |
-          cd frontend
-          npm test
-
-      # Install dependencies for backend
-      - name: Install backend dependencies
-        run: |
-          cd backend
-          npm install
-
-      # Run backend tests
-      - name: Run backend tests
-        run: |
-          cd backend
-          npm test
+          # Replace these commands with your build commands for CSS and JSX
+          npm run build:css
+          npm run build:jsx
+        working-directory: frontend   # Adjust the directory according to your project structure
