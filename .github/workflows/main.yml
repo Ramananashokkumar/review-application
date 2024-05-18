@@ -25,7 +25,7 @@ jobs:
 
     - name: Check for tests
       run: |
-        if [ "$(ls -A tests/*.js 2>/dev/null)" ]; then
+        if [ $(find tests -type f -name "*.js") ]; then
           echo "Tests exist."
         else
           echo "No tests found."
