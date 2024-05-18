@@ -33,3 +33,4 @@ jobs:
         run: |
           cd frontend   # Adjust the directory according to your project structure
           npm run build:jsx
+ 
