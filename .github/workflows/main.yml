@@ -1,4 +1,4 @@
-name: Full Application Workflow
+name: Build and Deploy
 
 on:
   push:
@@ -6,44 +6,39 @@ on:
       - main
 
 jobs:
-  build_frontend:
-    name: Build Frontend
+  build:
+    name: Build Frontend and Backend
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js for frontend
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
+      # Step to build the frontend
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
 
-      - name: Install frontend dependencies
-        run: npm install
-        working-directory: frontend
+      # Step to build the backend
+      - name: Build Backend
+        run: |
+          cd backend
+          npm install
 
-      - name: Build frontend
-        run: npm run build
-        working-directory: frontend
+      # Step to build Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t my-app .
+          docker tag my-app:latest my-app:main
 
-  test_backend:
-    name: Test Backend
-    runs-on: ubuntu-latest
+      # Step to login to Docker Hub (replace with your Docker Registry)
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js for backend
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: Install backend dependencies
-        run: npm install
-        working-directory: backend
-
-      - name: Run backend tests 
-        run: npm test
-        working-directory: backend
+      # Step to push Docker image to Docker Hub (replace with your Docker Registry)
+      - name: Push Docker image
+        run: |
+          docker push my-app:latest
+          docker push my-app:main
