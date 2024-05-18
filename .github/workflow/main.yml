@@ -3,7 +3,7 @@ name: Full Application Workflow
 on:
   push:
     branches:
-      - main
+      - main 
 
 jobs:
   backend:
