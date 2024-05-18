@@ -10,7 +10,7 @@ jobs:
     name: Backend
     runs-on: ubuntu-latest
     
-    steps: 
+    steps:
     - name: Checkout code
       uses: actions/checkout@v2
       
@@ -21,6 +21,16 @@ jobs:
 
     - name: Install dependencies
       run: npm install
+      working-directory: backend
+
+    - name: Check if tests exist
+      run: |
+        if [ -f "tests/*.js" ]; then
+          echo "Tests exist."
+        else
+          echo "No tests found."
+          exit 1
+        fi
       working-directory: backend
 
     - name: Run backend tests
