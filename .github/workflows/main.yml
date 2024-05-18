@@ -14,6 +14,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Create frontend directory if it doesn't exist
+      - name: Create Frontend Directory
+        run: mkdir frontend
+
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -33,4 +37,3 @@ jobs:
         run: |
           cd frontend   # Adjust the directory according to your project structure
           npm run build:jsx
- 
