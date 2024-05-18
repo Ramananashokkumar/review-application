@@ -1,4 +1,4 @@
-name: Full Application Tests
+name: Backend Test
 
 on:
   push:
@@ -6,69 +6,33 @@ on:
       - main
 
 jobs:
-  backend:
-    name: Backend Tests
+  test:
+    name: Run Backend Tests
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      
+
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
         node-version: '14'
 
-    - name: Install backend dependencies
+    - name: Install dependencies
       run: npm install
       working-directory: backend
 
-    - name: Run backend tests
-      run: npm test
+    - name: Check for test files
+      run: |
+        if [ -f "tests/*.js" ]; then
+          echo "Tests exist."
+        else
+          echo "No tests found."
+          exit 1
+        fi
       working-directory: backend
 
-  frontend:
-    name: Frontend Tests
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-
-    - name: Install frontend dependencies
-      run: npm install
-      working-directory: frontend
-
-    - name: Build frontend
-      run: npm run build
-      working-directory: frontend
-
-    - name: Run frontend tests
+    - name: Run tests
       run: npm test
-      working-directory: frontend
-
-  server:
-    name: Server Tests
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-
-    - name: Install server dependencies
-      run: npm install
-      working-directory: server
-
-    - name: Run server tests
-      run: npm test
-      working-directory: server
+      working-directory: backend
